@@ -1,0 +1,17 @@
+services:
+  - type: worker
+    name: mhcuidar-telegram-bot
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DOCTOR_EMAIL
+        value: mh.cuidarsaude@gmail.com
+      - key: TIMEZONE
+        value: America/Bahia

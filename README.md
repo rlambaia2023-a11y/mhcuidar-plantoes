@@ -1,4 +1,4 @@
-# 🩺 mhcuidar Plantões AI
+# 🩺 mhcuidar Plantões AI & Telegram Bot
 > **Sistema Inteligente de Gestão de Escalas, Plantões e Notificações Médicas**  
 > Desenvolvido especialmente para a Dra. e para a clínica **mhcuidar**.
 
@@ -6,156 +6,124 @@
 
 ## 📌 Visão Geral do Projeto
 
-O **mhcuidar Plantões AI** é uma solução médica de alta inteligência e máxima simplicidade operacional. Ele foi construído para eliminar a burocracia das escalas tradicionais, permitindo que a médica simplesmente **fale por áudio ou digite um resumo rápido** do seu plantão. O sistema extrai automaticamente hospital/clínica, data, horário, modalidade e duração, sincroniza com o **Google Agenda** da conta `mh.cuidarsaude@gmail.com` e dispara alertas com antecedência no **WhatsApp** `+55 (75) 99181-5612`.
+O **mhcuidar Plantões AI** é uma solução médica de alta inteligência e máxima simplicidade operacional. Ele foi construído para eliminar a burocracia das escalas tradicionais, permitindo que a médica simplesmente **fale por áudio ou digite um resumo rápido** do seu plantão. 
+
+O sistema:
+1. Extrai automaticamente o hospital/clínica, data, horário, modalidade e duração (**SN, 12h, 24h, 48h, 72h**).
+2. Sincroniza diretamente com a **Google Agenda** da conta oficial: `mh.cuidarsaude@gmail.com`.
+3. Envia e automatiza avisos com antecedência de **24 horas** e **2 horas** diretamente no seu **Telegram** e WhatsApp.
+4. Funciona tanto via **Web App / PWA** (pronto para GitHub Pages `github.io`) quanto via **Bot Dedicado no Telegram** 24/7 que ouve suas notas de voz diretamente no celular!
 
 ---
 
-## 🔬 Benchmarking: Comparativo com Sistemas do Mercado
+## 🔬 Pesquisa de Mercado: Benchmark de Sistemas de Escala Médica no Brasil
 
-Ao pesquisar os principais aplicativos de escalas médicas no Brasil (*Escala Einstein*, *Minha Escala*, *HealthChess*, *Medbolso*, *Pega Plantão* e *Meus Plantões*), identificamos os pontos fortes e as principais deficiências para um médico(a) plantonista e gestor(a) de clínica:
+Pesquisamos os principais sistemas utilizados no Brasil (*DoctorID*, *Escala Einstein*, *Minha Escala*, *HealthChess*, *Medbolso*, *Plantão.ai*, *Escalin* e *Meus Plantões*):
 
-| Recurso | Apps Tradicionais do Mercado | **mhcuidar Plantões AI** 🌟 |
+| Recurso | Softwares Tradicionais do Mercado | **mhcuidar Plantões AI** 🌟 |
 | :--- | :--- | :--- |
-| **Entrada por Voz (Speech-to-Schedule)** | ❌ Inexistente (exige preencher formulários com dezenas de campos) | ✅ **Totalmente suportada**: Aperte o microfone, fale naturalmente em português e a IA interpreta tudo. |
-| **Interpretação de Texto Livre** | ❌ Não suportado | ✅ **Suportado**: Cole mensagens ou escalas recebidas no WhatsApp e o sistema separa os plantões sozinho. |
-| **Suporte Nativo a Durações Médicas** | ⚠️ Rígido | ✅ **Nativo**: Suporta **SN** (Sobreaviso), **12h** (Diurno/Noturno), **24h**, **48h** e **72h**. |
-| **Integração com Google Agenda** | ⚠️ Complexo ou apenas export manual | ✅ **Instantânea**: 1 clique abre o evento direto configurado para `mh.cuidarsaude@gmail.com`. |
-| **Arquivo .ICS para iPhone / Android** | ⚠️ Raro | ✅ **Sim**: Baixa o calendário com alarmes automáticos (24h e 2h antes) para a agenda nativa do celular. |
-| **Avisos via WhatsApp Pessoal** | ❌ Apenas notificações push do app | ✅ **Nativo**: Link direto e webhook configurados para `+55 (75) 99181-5612`. |
-| **Alerta Médico de Fadiga / Estafa** | ❌ Não possui | ✅ **Inteligente**: Detecta plantões de 48h/72h ou jornadas acumuladas > 60h e emite alertas preventivos de descanso. |
-| **Foco de Uso** | RH hospitalar e burocracia de trocas | **Pessoal e Clínico**: Sob medida para a rotina da Dra. entre múltiplos hospitais e a clínica mhcuidar. |
+| **Entrada por Áudio / Voz (Telegram & Web)** | ❌ Inexistente (exigem preenchimento manual lento de dezenas de campos) | ✅ **Nativo por IA**: Envie uma nota de voz no Telegram ou toque no microfone do site e fale naturalmente. |
+| **Interpretação de Resumos Livres** | ❌ Não suportado | ✅ **Multimodal Gemini**: Entende "plantão de 24h no Clériston amanhã às 7h e sábado 12h na clínica". |
+| **Plantões Médicos Específicos** | ⚠️ Rígido | ✅ **Nativo**: Suporta **SN** (Sobreaviso), **12h** (Diurno/Noturno), **24h**, **48h** e **72h**. |
+| **Integração Google Agenda** | ⚠️ Complexo ou apenas export manual | ✅ **Instantâneo**: Sincroniza com a conta `mh.cuidarsaude@gmail.com` em 1 clique com lembretes automáticos. |
+| **Notificações no Telegram** | ❌ Quase nenhum possui | ✅ **Totalmente Integrado**: Bot dedicado com alertas automáticos com 24h e 2h de antecedência. |
+| **Alerta Médico de Fadiga / Estafa** | ❌ Não possui | ✅ **Inteligente**: Detecta turnos longos (48h/72h) ou sobrecarga mensal > 60h e emite alertas preventivos de descanso. |
+| **Estabilidade e Custo** | 💰 R$ 500 a R$ 2.000/mês | 🚀 **100% Gratuito & Alta Estabilidade**: Roda no GitHub Pages (`github.io`) e Render/Railway. |
 
 ---
 
-## 🚀 Principais Funcionalidades
+## 📱 Canais de Uso para a Dra.
 
-### 1. Entrada por Voz & Texto Inteligente (IA NLP)
-- **Reconhecimento de Fala Nativo**: Microfone com suporte a português brasileiro (`pt-BR`).
-- **Compreensão de Linguagem Natural**:
-  - *"Plantão de 24h no Hospital Clériston amanhã às 7h"*
-  - *"Sobreaviso SN sábado na clínica mhcuidar"*
-  - *"Plantão 12h noturno sexta no Hospital Estadual da Criança"*
-  - *"Plantão de 48h no fim de semana no Hospital Geral"*
-  - *"Plantão 72h no feriado no Clériston"*
-- **Multi-plantões em uma só frase**: *"Amanhã 24h no Clériston e domingo 12h diurno na mhcuidar"* gera automaticamente 2 cards independentes!
+### 1. Bot Dedicado no Telegram (`telegram-bot/bot.py`)
+O jeito mais rápido e prático no dia a dia:
+* **Grave um áudio no Telegram** enquanto dirige ou entre atendimentos: *"Amanhã 24h no Hospital Geral às 7h"*.
+* O bot transcreve o áudio com IA Gemini, confirma os horários, gera o botão para salvar na sua Google Agenda e agenda os alertas:
+  * ⏰ **24 horas antes**: aviso preventivo para descanso.
+  * 🚨 **2 horas antes**: aviso de saída e deslocamento para o hospital.
+* **Comandos úteis no Telegram:**
+  * `/escala` — Lista todos os próximos plantões agendados.
+  * `/proximo` — Mostra o próximo plantão com contagem regressiva em tempo real.
+  * `/ajuda` — Dicas e exemplos de agendamento.
 
-### 2. Sincronização com Google Agenda (`mh.cuidarsaude@gmail.com`)
-- Cada card possui o botão **"Google Agenda"**, que gera uma URL oficial do Google Calendar já com título estilizado (`🏥 [mhcuidar] Plantão 24h - Hospital...`), horários exatos de início e término em UTC, setor, modalidade e dados de contato.
-- Botão **".ICS"** para baixar o evento com alarmes de **24 horas antes** e **2 horas antes** que tocam no despertador/calendário do iPhone e Android.
-
-### 3. Alertas e Notificações no WhatsApp (`+55 75 99181-5612`)
-- Mensagens padronizadas, humanizadas e elegantes:
-  ```text
-  🩺 *mhcuidar | Alerta de Plantão (24 Horas Antes)*
-  Olá, Dra.! Lembrando da sua escala:
-
-  🏥 *Local:* Hospital Geral Clériston Andrade (HGCA)
-  ⏱️ *Tipo:* Plantão de 24h (24 horas)
-  🗓️ *Início:* Domingo, 25/10 às 07:00
-  🏁 *Término Previsto:* 26/10 às 07:00
-
-  ✅ Sincronizado com: mh.cuidarsaude@gmail.com
-  💙 *mhcuidar* - Cuidando de quem cuida.
-  ```
-- Botão rápido de WhatsApp que já abre a conversa no celular ou WhatsApp Web com a mensagem pronta.
-- Servidor em segundo plano (`server/server.js`) pronto para automação via Webhooks (Evolution API, Z-API, Baileys ou Twilio).
-
-### 4. Gestão Clínica & Dashboard de Horas
-- **Contagem Regressiva do Próximo Plantão**: Mostra exatamente quantas horas e minutos faltam para o início do próximo turno.
-- **Resumo de Horas do Mês**: Contabiliza total de horas e divide entre 12h, 24h, 48h, 72h e Sobreaviso (SN).
-- **Visão Semanal em Grade**: Permite verificar de relance os dias livres e os dias com escala médica.
+### 2. Painel Web Clínico (`mhcuidar-plantoes`)
+* Microfone integrado no navegador com transcrição instantânea (`pt-BR`).
+* Dashboard de horas do mês, contabilizando turnos de 12h, 24h, 48h, 72h e Sobreaviso (SN).
+* Filtros por modalidade, exportação em lote de arquivo `.ics` para iPhone/Android e links diretos para Google Agenda e WhatsApp.
 
 ---
 
-## 🛠️ Como Executar o Sistema Localmente
+## 🚀 Como Executar e Manter 24/7 sem Cair
 
-### Pré-requisitos
-- Node.js (versão 18+) instalado.
+### Parte A: Publicação do Painel Web no GitHub Pages (`github.io`)
+O projeto já conta com o workflow do GitHub Actions em `.github/workflows/deploy.yml`.
 
-### 1. Clonar ou Acessar a Pasta do Projeto
-```bash
-cd "C:\Users\FBBR\.gemini\antigravity\scratch\mhcuidar-plantoes"
-```
-
-### 2. Instalar as Dependências (se ainda não instalou)
-```bash
-npm install
-```
-
-### 3. Iniciar o Aplicativo Web
-```bash
-npm run dev
-```
-O Vite iniciará o servidor local em: `http://localhost:5173`.  
-Abra esse endereço no seu navegador (Chrome, Edge ou Safari) para usar!
-
-### 4. (Opcional) Iniciar o Servidor de Automação de WhatsApp em Segundo Plano
-Para rodar a rotina cron que monitora os plantões e dispara os alertas automaticamente:
-```bash
-npm run server
-```
-O servidor rodará na porta `3001`.
+1. **Subir o código para o seu repositório no GitHub:**
+   ```bash
+   cd "C:\Users\FBBR\.gemini\antigravity\scratch\mhcuidar-plantoes"
+   git add .
+   git commit -m "feat: bot de plantoes mhcuidar com telegram e google calendar"
+   git remote add origin https://github.com/SEU_USUARIO/mhcuidar-plantoes.git
+   git branch -M main
+   git push -u origin main
+   ```
+2. **Ativar o GitHub Pages no repositório:**
+   * No GitHub, acesse **Settings** > **Pages**.
+   * Em **Build and deployment**, selecione **Source: GitHub Actions**.
+   * Em menos de 2 minutos seu painel estará online e estável em:  
+     `https://SEU_USUARIO.github.io/mhcuidar-plantoes/`
 
 ---
 
-## 🌐 Publicação no GitHub e Deploy na Web (.io / Vercel)
+### Parte B: Hospedar o Bot do Telegram 24 Horas Grátis (Render / Railway / Cloud Run)
 
-### Passo 1: Inicializar o Repositório Git Local
+Para que o bot do Telegram fique **sempre online ("para nunca ele ficar fora")**, ele pode ser executado gratuitamente no **Render.com** ou **Railway**:
+
+#### Opção Recomendada: Render.com (Background Worker Gratuito)
+1. Acesse [render.com](https://render.com) e conecte com seu GitHub.
+2. Clique em **New** > **Background Worker** (ou use o blueprint `telegram-bot/render.yaml`).
+3. Conecte o repositório `mhcuidar-plantoes`.
+4. Defina as seguintes configurações:
+   * **Root Directory**: `telegram-bot`
+   * **Runtime**: `Python 3`
+   * **Build Command**: `pip install -r requirements.txt`
+   * **Start Command**: `python bot.py`
+5. Adicione as variáveis de ambiente (**Environment Variables**):
+   * `TELEGRAM_BOT_TOKEN`: Token obtido no `@BotFather` do Telegram.
+   * `GEMINI_API_KEY`: Sua chave de IA do Google AI Studio (gratuita).
+   * `DOCTOR_EMAIL`: `mh.cuidarsaude@gmail.com`
+   * `TIMEZONE`: `America/Bahia` (ou seu fuso de preferência).
+6. Clique em **Create Worker**. Pronto! O bot ficará rodando 24 horas por dia, 7 dias por semana, sem quedas e sem custos.
+
+#### Executar Localmente no Computador:
+Se preferir rodar no próprio PC:
 ```bash
-git init
-git add .
-git commit -m "feat: lancamento inicial do mhcuidar plantoes ai"
+cd telegram-bot
+pip install -r requirements.txt
+python bot.py
 ```
-
-### Passo 2: Criar o Repositório no GitHub
-1. Acesse [github.com/new](https://github.com/new).
-2. Crie um repositório chamado `mhcuidar-plantoes`.
-3. Conecte e envie o código:
-```bash
-git remote add origin https://github.com/SEU_USUARIO/mhcuidar-plantoes.git
-git branch -M main
-git push -u origin main
-```
-
-### Passo 3: Publicar Online Gratuitamente
-- **Opção A (Vercel - Recomendado para .io / .app)**:
-  1. Acesse [vercel.com](https://vercel.com) e conecte sua conta GitHub.
-  2. Clique em **Add New Project** e selecione o repositório `mhcuidar-plantoes`.
-  3. O Vercel detectará automaticamente o Vite e publicará em segundos em uma URL pública (ex: `https://mhcuidar-plantoes.vercel.app`).
-  4. Você pode adicionar um domínio personalizado próprio da clínica (ex: `plantoes.mhcuidar.com.br` ou `mhcuidar.io`).
-
-- **Opção B (GitHub Pages)**:
-  1. Instale o pacote `gh-pages`: `npm i -D gh-pages`
-  2. No `vite.config.js`, configure `base: '/mhcuidar-plantoes/'`.
-  3. Execute `npm run build` e publique na branch `gh-pages`.
 
 ---
 
-## 📋 Configurações Rápidas do Sistema
+## ⚙️ Configurações Integradas
 
-| Parâmetro | Valor Configurado | Onde Alterar |
+| Configuração | Padrão | Finalidade |
 | :--- | :--- | :--- |
-| **E-mail Google Agenda** | `mh.cuidarsaude@gmail.com` | Ícone ⚙️ (Configurações) no topo |
-| **WhatsApp para Alertas** | `+5575991815612` | Ícone ⚙️ (Configurações) no topo |
-| **Antecedência 1** | 24 horas antes do plantão | Ícone ⚙️ (Configurações) no topo |
-| **Antecedência 2** | 2 horas antes do plantão | Ícone ⚙️ (Configurações) no topo |
-| **Hospitais Padrão** | Clériston Andrade, HEC, Hospital da Mulher, UPA, Clínica mhcuidar | No botão "+ Novo Plantão" ou na fala da IA |
+| **E-mail Google Agenda** | `mh.cuidarsaude@gmail.com` | Todos os botões e links vinculam eventos diretamente a esta conta. |
+| **Avisos com 24h** | ✅ Ativo | Lembrete de véspera para organização de repouso e substituições. |
+| **Avisos com 2h** | ✅ Ativo | Alerta imediato de deslocamento até o hospital/clínica. |
+| **Fuso Horário** | `America/Bahia` | Horários oficiais brasileiros. |
+| **WhatsApp Oficial** | `+55 (75) 99181-5612` | Atalho de mensagem formatada para envio pessoal. |
 
 ---
 
-## 👩‍⚕️ Dicas de Uso para o Dia a Dia da Dra.
+## 👩‍⚕️ Exemplos de Áudio / Mensagens Suportadas
 
-1. **Quando receber uma escala no WhatsApp**:
-   - Copie o texto da mensagem e cole diretamente no campo de texto da tela inicial.
-   - Clique em **"Interpretar com IA"**. A IA extrairá os dias e horários automaticamente.
-2. **Quando estiver no carro ou saindo do plantão**:
-   - Abra o app no celular, toque no microfone e fale: *"Plantão de 24 horas sábado às 7h no Clériston"*.
-   - Toque em **Confirmar**.
-3. **Para garantir o alarme no celular**:
-   - Clique no botão **Google Agenda** ou **.ICS** para ter o alarme registrado diretamente na sua agenda padrão.
-4. **Para enviar o lembrete para si mesma no WhatsApp**:
-   - Basta tocar no botão verde **WhatsApp** em qualquer plantão. A mensagem formatada abrirá pronta para envio com um único toque!
+* *"Tenho plantão de 24h no Hospital Geral amanhã às 7 da manhã"*
+* *"Plantão de 12h noturno no Hospital da Criança sexta-feira às 19h"*
+* *"Sobreaviso SN neste sábado na clínica mhcuidar"*
+* *"Plantão de 48h no final de semana no Clériston começando sábado às 7h"*
+* *"Amanhã 24h no Clériston e terça 12h diurno na clínica"*
 
 ---
 
-Desenvolvido com carinho para a equipe médica da **mhcuidar** 🩺💚.
+Desenvolvido com carinho para a excelência médica da **mhcuidar** 🩺💚.
