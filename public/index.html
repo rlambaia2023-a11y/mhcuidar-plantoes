@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mhcuidar • Plantões</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topo">
+  <div class="marca"><span class="logo">🩺</span><div><strong>mhcuidar</strong><small>Plantões</small></div></div>
+  <div id="statusGoogle" class="status-google">agenda: …</div>
+</header>
+
+<main>
+  <section class="card novo">
+    <h2>Novo plantão</h2>
+    <p class="dica">Fale ou digite como você quiser. Ex.: <em>"Plantão 24h amanhã às 7h no Hospital São Luiz"</em></p>
+    <div class="tipos">
+      <button data-tipo="12h" type="button">12h</button>
+      <button data-tipo="24h" type="button">24h</button>
+      <button data-tipo="48h" type="button">48h</button>
+      <button data-tipo="72h" type="button">72h</button>
+      <button data-tipo="SN" type="button">SN</button>
+    </div>
+    <div class="entrada">
+      <textarea id="texto" rows="3" placeholder="Ex.: Sobreaviso dia 25 no Hospital Albert Einstein"></textarea>
+      <button id="btnVoz" type="button" title="Falar">🎤</button>
+    </div>
+    <div class="acoes">
+      <button id="btnEntender" type="button" class="primario">Entender e agendar →</button>
+    </div>
+    <div id="confirmacao"></div>
+  </section>
+
+  <section class="card">
+    <div class="linha-titulo"><h2>Próximos plantões</h2><button id="btnAtualizar" type="button" class="mini">↻</button></div>
+    <div id="lista"></div>
+  </section>
+
+  <section class="card config">
+    <h2>⚙️ Configurações</h2>
+    <div class="grade">
+      <label>Seu WhatsApp (só dígitos, com DDI+DDD)<input id="cfgWhats" inputmode="numeric" placeholder="5511999998888"></label>
+      <label>Provedor do WhatsApp
+        <select id="cfgProv">
+          <option value="callmebot">CallMeBot (grátis)</option>
+          <option value="twilio">Twilio</option>
+          <option value="console">Só registrar (teste)</option>
+        </select>
+      </label>
+      <label>Chave CallMeBot<input id="cfgKey" placeholder="apikey do CallMeBot"></label>
+      <label>Avisar antes (minutos, separados por vírgula)<input id="cfgJanelas" placeholder="1440,120"></label>
+      <label>Resumo diário (HH:MM, vazio = desligado)<input id="cfgResumo" placeholder="07:00"></label>
+    </div>
+    <div class="acoes">
+      <button id="btnSalvarCfg" type="button" class="primario">Salvar</button>
+      <button id="btnTestarWpp" type="button">Testar WhatsApp</button>
+      <button id="btnGoogle" type="button">🔗 Conectar Google Agenda</button>
+    </div>
+    <p class="nota">A agenda conectada é a da conta <strong>mh.cuidarsaude@gmail.com</strong>. Os plantões criados aqui aparecem nela automaticamente, e os lembretes chegam no seu WhatsApp.</p>
+  </section>
+</main>
+
+<footer>mhcuidar • feito com cuidado 💚</footer>
+<script src="app.js"></script>
+</body>
+</html>
