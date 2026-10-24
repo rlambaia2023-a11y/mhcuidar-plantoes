@@ -2,6 +2,8 @@
 > **Sistema Inteligente de Gestão de Escalas, Plantões e Notificações Médicas**  
 > Desenvolvido especialmente para a Dra. e para a clínica **mhcuidar**.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Frlambaia2023-a11y%2Fmhcuidar-plantoes)
+
 ---
 
 ## 📌 Visão Geral do Projeto
