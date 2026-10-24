@@ -1,139 +1,118 @@
-# 🩺 mhcuidar • Plantões
+# 🩺 mhcuidar • Plantões AI
 
-Sistema pessoal de agendamento de plantões médicos. Você **fala ou digita um resumo** em linguagem natural — *"Plantão 24h amanhã às 7h no Hospital São Luiz"* — e o sistema entende, agenda, sincroniza com sua **Google Agenda** e te **avisa no WhatsApp** com antecedência.
+> **Sistema Inteligente de Escalas e Plantões Médicos para a Dra. e Equipe da clínica mhcuidar**  
+> Fale ou digite seu plantão em linguagem natural — o sistema agenda, calcula as horas, sincroniza com sua **Google Agenda** e te avisa no **WhatsApp** com antecedência.
 
-## ✨ Recursos
+---
 
-- **Entrada por voz ou texto** em português: o sistema entende tipos de plantão (**12h, 24h, 48h, 72h, SN/sobreaviso**), datas (*hoje, amanhã, dia 25, 25/10, segunda, próxima sexta, "segunda, quarta e sexta"*), horas (*às 7h, 19h, 7 da noite, meio-dia*) e o local (*no Hospital X, na clínica*).
-- **Confirmação inteligente**: antes de salvar, mostra um cartão com tudo que entendeu (com nível de confiança) — você ajusta com um toque se precisar.
-- **Google Agenda**: cada plantão vira um evento na agenda da conta `mh.cuidarsaude@gmail.com`, com lembretes próprios.
-- **Lembretes no WhatsApp**: avisos automáticos 24h e 2h antes (configurável), mais resumo diário opcional de manhã.
-- **Múltiplos plantões de uma vez**: *"plantão 12h segunda, quarta e sexta no Hospital X"* cria os três.
-- **100% seu**: banco de dados local (SQLite), sem mensalidade, sem depender de terceiros para os dados.
+## ✨ Principais Funcionalidades
 
-## 🚀 Instalação (no seu computador)
+- **🎙️ Entrada por Voz ou Texto (IA NLP)**:
+  - Fale naturalmente pelo microfone em português ou digite/cole a escala recebida.
+  - Entende todas as modalidades médicas: **SN (Sobreaviso / Se Necessário)**, **12h Diurno**, **12h Noturno**, **24h**, **48h** e **72h**.
+  - Entende datas relativas (*"hoje"*, *"amanhã"*, *"próxima sexta"*, *"dia 25/10"*) e múltiplos plantões em uma única frase (*"plantão 12h segunda, quarta e sexta no Hospital X"* cria os três).
+  - Reconhece hospitais da região e clínicas: *Clínica mhcuidar*, *Hospital Geral Clériston Andrade (HGCA)*, *Hospital Estadual da Criança (HEC)*, *Hospital da Mulher*, *Hospital Geral*, *Hospital Unimed*, *UPA 24h*, *SAMU*.
 
-Pré-requisito: [Node.js 22 ou maior](https://nodejs.org) instalado.
+- **⏰ Contagem Regressiva em Tempo Real**:
+  - Banner dinâmico no topo informando exatamente quantas horas, minutos e segundos faltam para o início do seu próximo plantão.
 
-```bat
-cd mhcuidar-plantoes
+- **📊 Dashboard de Horas no Mês**:
+  - Total de horas acumuladas no mês com quebra detalhada: 24h, 12h, 48h/72h e Sobreaviso (SN).
+  - **Alerta de Fadiga Médica**: Se a jornada ultrapassar 60h no mês ou envolver turnos contínuos de 48h/72h, emite recomendações de saúde e repouso.
+
+- **📅 Sincronização Dupla com Google Agenda (`mh.cuidarsaude@gmail.com`)**:
+  - **Opção A (Instantânea de 1 Clique)**: Botão direto em cada plantão que abre o evento pré-formatado na sua conta Google sem precisar de nenhuma configuração técnica!
+  - **Opção B (Arquivo .ICS)**: Baixa o calendário com alarmes de **24h e 2h antes** para o seu iPhone ou Android.
+  - **Opção C (OAuth2 Oficial)**: Sincronização automática em segundo plano via Google Calendar API.
+
+- **📲 Alertas e Robô de WhatsApp (`+55 75 99181-5612`)**:
+  - **Agente Próprio (Baileys)**: Conecta o seu próprio número de WhatsApp como "Aparelho Conectado" — sem intermediários pagos.
+  - **Você agenda pelo WhatsApp**: Mande uma mensagem para você mesma (ex: *"Plantão 24h amanhã às 7h no Clériston"*) → o bot entende, mostra o resumo e quando você responde **SIM**, ele agenda tudo sozinho!
+  - **Lembretes Automáticos**: Avisos enviados com antecedência de **24 horas** e **2 horas** antes do plantão, além de resumo diário matinal às 07:00.
+  - **Botão Direto no Painel**: Toque em "📲 WhatsApp" em qualquer card para abrir a mensagem de lembrete pronta no WhatsApp Web ou App.
+
+- **🔒 100% Privado e Seguro**:
+  - Banco de dados local em SQLite (`data/plantoes.db`). Seus dados médicos ficam sob seu controle, sem mensalidades.
+
+---
+
+## 🚀 Como Iniciar no seu Computador (Uso Local)
+
+### Pré-requisitos
+- Node.js (versão 20 ou 22+) instalado.
+
+### 1. Iniciar com 1 Clique (Windows)
+Basta dar **dois cliques no arquivo `iniciar.bat`** na pasta do projeto!  
+Ele instalará as dependências e abrirá o sistema automaticamente no seu navegador em:
+👉 **`http://localhost:3003`**
+
+*(Ou pelo terminal:)*
+```bash
 npm install
-copy .env.example .env
+npm start
 ```
 
-No Windows, inicie com dois cliques em **`iniciar.bat`** (ou `npm start` no terminal). Abra http://localhost:3003.
+---
 
-> Deixe o computador ligado para os lembretes funcionarem. Para 24/7 de verdade, veja **Publicar na nuvem** abaixo.
+## 📱 Como Conectar seu WhatsApp (Pareamento)
 
-## 🔗 Conectar a Google Agenda (mh.cuidarsaude@gmail.com)
+Para que os lembretes automáticos funcionem pelo agente próprio:
 
-Feito uma única vez (~10 min):
+1. Abra o sistema em `http://localhost:3003`.
+2. No card **🤖 Agente WhatsApp Próprio (mhcuidar)**:
+   - **Opção 1 (Código de Pareamento - Sem Câmera)**: Digite seu número (`5575991815612`) e clique em **Gerar Código**. No seu celular, vá em *WhatsApp → Aparelhos conectados → Conectar com número de telefone* e digite o código de 8 dígitos.
+   - **Opção 2 (QR Code)**: Escaneie o QR Code exibido na tela com a câmera do WhatsApp.
+3. Pronto! O status mudará para `🟢 Conectado`.
 
-1. Acesse https://console.cloud.google.com e crie um projeto (ex.: `mhcuidar-plantoes`).
-2. Em **APIs e serviços → Biblioteca**, ative a **Google Calendar API**.
-3. Em **APIs e serviços → Tela de consentimento OAuth**: tipo **Externo**, preencha nome/e-mail, adicione seu e-mail (`mh.cuidarsaude@gmail.com`) em **Usuários de teste**, salve.
-4. Em **Credenciais → Criar credencial → ID do cliente OAuth**: tipo **Aplicativo da Web**; em **URIs de redirecionamento autorizados** adicione:
-   `http://localhost:3003/api/google/callback`
-5. Copie o **ID do cliente** e o **Segredo do cliente** para o `.env` (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`).
-6. Reinicie o sistema e clique em **🔗 Conectar Google Agenda** nas Configurações. Autorize com a conta `mh.cuidarsaude@gmail.com` e pronto — os plantões passam a aparecer na sua agenda automaticamente.
+---
 
-## 🤖 Agente WhatsApp próprio (recomendado)
+## 🔗 Como Conectar a Google Agenda (mh.cuidarsaude@gmail.com)
 
-Em vez de serviços pagos, o sistema inclui **nosso próprio agente de WhatsApp**: ele conecta o seu número como um "aparelho vinculado" (igual ao WhatsApp Web) e faz tudo sozinho — **sem custo por mensagem**:
+- **Modo Rápido**: Você não precisa configurar nada no Google Cloud. Basta clicar no botão **"📅 Agenda"** ao lado de qualquer plantão na lista para adicioná-lo diretamente à sua conta `mh.cuidarsaude@gmail.com`.
+- **Modo Automático (OAuth2)**:
+  1. No [Google Cloud Console](https://console.cloud.google.com), ative a **Google Calendar API**.
+  2. Crie uma credencial OAuth2 (Tipo: *Aplicativo da Web*) e adicione a URL:  
+     `http://localhost:3003/api/google/callback`
+  3. Preencha `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` no arquivo `.env`.
+  4. Clique em **"Conectar Google Agenda"** no rodapé do sistema.
 
-- **Você agenda pelo próprio WhatsApp**: mande uma mensagem para você mesma como *"Plantão 24h amanhã às 7h no Hospital São Luiz"* → ele entende, mostra o resumo e agenda quando você responde **SIM**. Comandos: `agenda` (próximos plantões), `sim`, `não`, `ajuda`.
-- **Lembretes automáticos** 24h e 2h antes + resumo diário, direto no seu WhatsApp.
-- **Roda no nosso servidor** (VM dedicada, ligada 24/7), com um vigia automático que reinicia o sistema sozinho se ele cair.
+---
 
-### Pareamento (uma única vez)
+## 🌐 Publicar Online 24/7 (Railway / Servidor Nuvem)
 
-1. O sistema gera um **QR code** (arquivo `data/wa-qr.png` ou endpoint `/api/wa/qr`).
-2. No celular: WhatsApp → **Aparelhos conectados** → **Conectar aparelho** → escaneie o QR.
-3. Pronto — a sessão fica salva e reconecta sozinha. Se o QR expirar antes de escanear, gere outro em `/api/wa/qr` (ou `POST /api/wa/reconnect`).
+Para que o robô de WhatsApp e os lembretes funcionem mesmo com seu computador desligado:
 
-### ⚠️ Aviso honesto
+1. Suba este repositório para o seu GitHub.
+2. Acesse [railway.app](https://railway.app) e clique em **New Project → Deploy from GitHub**.
+3. Selecione o repositório `mhcuidar-plantoes`.
+4. Em **Variables**, adicione as variáveis do `.env` (`WHATSAPP_NUMBER=5575991815612`, etc.).
+5. O Railway manterá o servidor ligado 24/7 de graça ou por centavos, enviando seus lembretes rigorosamente no horário!
 
-O agente usa automação não-oficial do WhatsApp (protocolo Web). Na prática funciona bem, mas existe **risco de bloqueio temporário** do número pelo WhatsApp — por isso os lembretes também podem usar CallMeBot ou Twilio como alternativa (troque `WHATSAPP_PROVIDER` nas Configurações). Recomendações: mantenha o app do celular atualizado e não use o número para disparos em massa.
+---
 
-## 📲 Lembretes no WhatsApp (alternativas)
-
-### Opção A — CallMeBot (grátis)
-
-1. Salve o número **+34 644 71 27 40** nos contatos e mande no WhatsApp: `I allow callmebot to send me messages`
-2. Você recebe uma **apikey**. Coloque-a nas Configurações do sistema (campo *Chave CallMeBot*) junto com seu número (`5511999998888`).
-3. Clique em **Testar WhatsApp**. Recebeu? Está funcionando.
-
-## 📚 Por que um sistema próprio?
-
-Pesquisa de mercado (out/2026) mostrou que **nenhum sistema popular combina** entrada em linguagem natural/voz + visão multi-hospitais + lembretes automáticos no WhatsApp para o médico autônomo:
-
-- **Internacionais** (Amion, QGenda, ShiftAdmin): feitos para grupos e hospitais grandes, caros, sem WhatsApp.
-- **Marketplaces** (Medely, ShiftKey, Revoluna): ofertam vagas, não gerenciam sua agenda pessoal.
-- **Brasileiros de consultório** (iClinic, Doctoralia): lembretes WhatsApp são para *pacientes*, não para seus plantões.
-- **Escalin** (o mais próximo: R$ 39,90/mês, assistente por WhatsApp em linguagem natural) não anuncia lembretes automáticos de plantão.
-
-Este sistema preenche exatamente essa lacuna — e é seu, sem mensalidade.
-
-### Opção B — Twilio
-
-Crie conta em https://www.twilio.com/try-twilio, ative o WhatsApp Sandbox, preencha `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` no `.env` e escolha provedor `twilio` nas Configurações.
-
-### Opção C — API oficial do WhatsApp (Meta)
-
-Para volume maior ou número comercial: via um BSP (provedor oficial), mensagens utilitárias custam cerca de **R$ 0,035 cada** no Brasil (tabela Meta) — ~120 lembretes/mês sairiam por volta de R$ 4,20/mês. Exige implementação dedicada; fale comigo se quiser evoluir para essa opção.
-
-## ⏰ Como funcionam os lembretes
-
-- A cada 5 minutos o sistema verifica os plantões futuros.
-- Nas janelas configuradas (padrão: **1440 min = 24h antes** e **120 min = 2h antes**), ele manda no seu WhatsApp:
-  > ⏰ *Lembrete de plantão — mhcuidar*
-  > 🩺 Plantão 24h
-  > 📅 sex 24/10 às 07:00 (daqui a 24h)
-  > 📍 Hospital São Luiz
-  > ⏳ Término previsto: sáb 25/10 às 07:00
-- **Resumo diário** (opcional): configure um horário (ex.: `07:00`) e receba toda manhã a lista dos plantões do dia.
-- Cada aviso é enviado **uma única vez** (controle anti-duplicidade no banco).
-
-## 💬 Exemplos do que você pode falar/digitar
-
-- *"Plantão 24h amanhã às 7h no Hospital São Luiz"*
-- *"Sobreaviso dia 25 no Hospital Albert Einstein"*
-- *"SN amanhã na clínica"*
-- *"Plantão 12h hoje às 19h na UPA Vila Maria"*
-- *"Plantão 48h dia 12/11 às 8h no Hospital das Clínicas"*
-- *"Plantão segunda, quarta e sexta às 7h no Hospital X"*
-- *"Plantão de 72 horas dia 5 de novembro no Hospital Sírio"*
-
-Se faltar alguma informação (hora, duração, local), o sistema assume um padrão sensato, **avisa o que assumiu** e deixa você corrigir no cartão de confirmação antes de salvar.
-
-## ☁️ Publicar na nuvem (Railway — 24/7)
-
-Para os lembretes funcionarem mesmo com o computador desligado:
-
-1. Suba este projeto para o GitHub.
-2. Em https://railway.app → **New Project → Deploy from GitHub**, selecione o repositório.
-3. Em **Variables**, cadastre as mesmas chaves do `.env` (nunca commite o `.env`!).
-   - Ajuste `GOOGLE_REDIRECT_URI` para `https://SEU-APP.up.railway.app/api/google/callback` e adicione essa URI nas credenciais do Google Cloud.
-4. Pronto: o Railway mantém o sistema ligado e os lembretes chegam no seu WhatsApp de qualquer lugar.
-
-## 🗂️ Estrutura
+## 🗂️ Estrutura do Projeto
 
 ```
 mhcuidar-plantoes/
+├── public/
+│   ├── index.html       # Interface médica moderna responsiva (PWA-ready)
+│   ├── app.js           # Lógica frontend (voz, timer, estatísticas, WhatsApp, .ICS)
+│   └── style.css        # Identidade visual clínica verde esmeralda mhcuidar
 ├── src/
-│   ├── server.js         # API + páginas
-│   ├── parser.js         # interpreta o português falado/digitado
-│   ├── db.js             # SQLite (node:sqlite, sem compilação)
-│   ├── config.js         # .env + configurações da interface
-│   ├── scheduler.js      # lembretes automáticos (a cada 5 min)
-│   ├── whatsapp.js       # CallMeBot / Twilio / console
-│   └── googleCalendar.js # OAuth2 + eventos na agenda
-├── public/               # interface (voz via Web Speech API)
-├── data/                 # banco + token (não vai para o git)
-├── .env.example
-└── iniciar.bat / iniciar.sh
+│   ├── server.js        # Servidor Express + API REST
+│   ├── agente.js        # Agente próprio WhatsApp via Baileys (protocolo Web)
+│   ├── bot.js           # Bot de conversa interativo no WhatsApp
+│   ├── parser.js        # Motor NLP que interpreta voz e texto em português
+│   ├── db.js            # Banco de dados local SQLite (node:sqlite nativo)
+│   ├── scheduler.js     # Agendador cron de lembretes (24h e 2h antes)
+│   ├── googleCalendar.js# Sincronizador OAuth2 da Google Agenda
+│   ├── whatsapp.js      # Disparador WhatsApp multi-provedores
+│   └── config.js        # Gerenciador de configurações locais
+├── data/                # Banco de dados e sessões (protegido pelo .gitignore)
+├── iniciar.bat          # Inicializador rápido para Windows
+└── .env.example         # Modelo de variáveis de ambiente
 ```
 
-## 🔒 Privacidade
+---
 
-Seus plantões ficam no banco local (`data/plantoes.db`). O token do Google fica em `data/token.json`. Nada disso é enviado ao GitHub (`.gitignore` protege). As únicas saídas são: eventos criados **na sua própria** Google Agenda e mensagens de lembrete **para o seu próprio** WhatsApp.
+Desenvolvido especialmente para o dia a dia e para a equipe da **mhcuidar** 🩺💚

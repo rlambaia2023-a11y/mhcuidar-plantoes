@@ -1,69 +1,255 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mhcuidar • Plantões</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>mhcuidar • Plantões AI</title>
+  <meta name="description" content="Sistema inteligente de agendamento de plantões médicos com entrada por voz, Google Agenda e WhatsApp.">
+  <meta name="theme-color" content="#0d9488">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- Barra Superior -->
 <header class="topo">
-  <div class="marca"><span class="logo">🩺</span><div><strong>mhcuidar</strong><small>Plantões</small></div></div>
-  <div id="statusGoogle" class="status-google">agenda: …</div>
+  <div class="marca">
+    <div class="logo-box">🩺</div>
+    <div>
+      <div class="marca-titulo">
+        <span class="mhcuidar-nome">mh<strong>cuidar</strong></span>
+        <span class="badge-app">Plantões AI</span>
+      </div>
+      <small class="marca-sub">Gestão Inteligente de Escalas Médicas</small>
+    </div>
+  </div>
+
+  <div class="status-topo">
+    <div id="statusGoogle" class="status-pill status-google" title="Sincronização com Google Agenda">
+      <span>Agenda: <strong>mh.cuidarsaude@gmail.com</strong></span>
+    </div>
+    <div id="statusWa" class="status-pill status-wa" title="Agente WhatsApp Próprio">
+      <span>WhatsApp: <strong>+55 (75) 99181-5612</strong></span>
+    </div>
+  </div>
 </header>
 
 <main>
-  <section class="card novo">
-    <h2>Novo plantão</h2>
-    <p class="dica">Fale ou digite como você quiser. Ex.: <em>"Plantão 24h amanhã às 7h no Hospital São Luiz"</em></p>
+
+  <!-- Banner do Próximo Plantão com Contagem Regressiva -->
+  <section id="bannerProximo" class="card banner-proximo">
+    <div class="banner-tag">
+      <span>⏰ PRÓXIMO PLANTÃO</span>
+      <span id="bannerTipo" class="tag-tipo">24h</span>
+    </div>
+    <div class="banner-corpo">
+      <div class="banner-dados">
+        <h2 id="bannerLocal">Carregando próximo plantão…</h2>
+        <p id="bannerHorarios" class="banner-horarios">--/-- às --:--</p>
+        <div id="bannerAlertaFadiga" class="alerta-fadiga" style="display:none"></div>
+      </div>
+      <div class="banner-timer-box">
+        <span class="timer-rotulo">Começa em:</span>
+        <div id="bannerTimer" class="timer-numeros">
+          <span id="tHoras">00</span>h <span id="tMinutos">00</span>m <span id="tSegundos">00</span>s
+        </div>
+        <div class="banner-acoes-rapidas">
+          <a id="btnZapProximo" href="#" target="_blank" class="btn-acao-zap">📲 Lembrete WhatsApp</a>
+          <a id="btnGcalProximo" href="#" target="_blank" class="btn-acao-gcal">📅 Google Agenda</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Card Principal: Falar ou Digitar com IA -->
+  <section class="card card-destaque">
+    <div class="linha-titulo-ia">
+      <h2>✨ Fale ou Digite seu Plantão</h2>
+      <span class="badge-ia">IA Parser Ativo</span>
+    </div>
+    <p class="dica">
+      Fale ou digite naturalmente. Suporta <strong>SN (Sobreaviso)</strong>, <strong>12h</strong>, <strong>24h</strong>, <strong>48h</strong> ou <strong>72h</strong>.
+    </p>
+
+    <!-- Botões de Modalidade Rápida -->
     <div class="tipos">
-      <button data-tipo="12h" type="button">12h</button>
-      <button data-tipo="24h" type="button">24h</button>
-      <button data-tipo="48h" type="button">48h</button>
-      <button data-tipo="72h" type="button">72h</button>
-      <button data-tipo="SN" type="button">SN</button>
+      <button data-tipo="SN" type="button" class="btn-tipo-filtro">🟡 SN (Sobreaviso)</button>
+      <button data-tipo="12h" type="button" class="btn-tipo-filtro">🔵 12h Diurno / Noturno</button>
+      <button data-tipo="24h" type="button" class="btn-tipo-filtro">🟢 24 Horas</button>
+      <button data-tipo="48h" type="button" class="btn-tipo-filtro">🟠 48 Horas</button>
+      <button data-tipo="72h" type="button" class="btn-tipo-filtro">🔴 72 Horas</button>
     </div>
-    <div class="entrada">
-      <textarea id="texto" rows="3" placeholder="Ex.: Sobreaviso dia 25 no Hospital Albert Einstein"></textarea>
-      <button id="btnVoz" type="button" title="Falar">🎤</button>
+
+    <!-- Campo de Entrada com Microfone -->
+    <div class="entrada-voz-box">
+      <textarea id="texto" rows="3" placeholder="Fale ou digite: 'Plantão 24h amanhã às 7h no Clériston e sábado sobreaviso SN na mhcuidar'…"></textarea>
+      <button id="btnVoz" type="button" title="Clique para falar seu plantão pelo microfone">
+        <span class="mic-icon">🎤</span>
+        <span class="mic-label">Falar</span>
+      </button>
     </div>
-    <div class="acoes">
-      <button id="btnEntender" type="button" class="primario">Entender e agendar →</button>
+
+    <!-- Sugestões Rápidas Clicáveis -->
+    <div class="sugestoes-bar">
+      <span class="sugestoes-label">Exemplos rápidos:</span>
+      <div class="sugestoes-chips">
+        <button type="button" class="chip-exemplo" data-ex="Plantão 24h amanhã às 7h no Clériston">"Plantão 24h amanhã às 7h no Clériston"</button>
+        <button type="button" class="chip-exemplo" data-ex="Sobreaviso SN sábado na clínica mhcuidar">"Sobreaviso SN sábado na clínica mhcuidar"</button>
+        <button type="button" class="chip-exemplo" data-ex="Plantão 12h noturno sexta no Hospital da Criança">"Plantão 12h noturno sexta no Hospital da Criança"</button>
+        <button type="button" class="chip-exemplo" data-ex="Plantão 48h fim de semana no Hospital Geral">"Plantão 48h fim de semana no Hospital Geral"</button>
+      </div>
     </div>
+
+    <div class="acoes-principais">
+      <button id="btnEntender" type="button" class="primario">
+        <span>✨ Interpretar e Agendar com IA</span>
+      </button>
+    </div>
+
+    <!-- Área Dinâmica de Confirmação da IA -->
     <div id="confirmacao"></div>
   </section>
 
-  <section class="card">
-    <div class="linha-titulo"><h2>Próximos plantões</h2><button id="btnAtualizar" type="button" class="mini">↻</button></div>
-    <div id="lista"></div>
+  <!-- Dashboard de Horas no Mês -->
+  <section class="card card-dashboard">
+    <div class="linha-titulo">
+      <h2>📊 Resumo de Escala no Mês</h2>
+      <span id="mesAtualBadge" class="badge-mes">Outubro</span>
+    </div>
+    <div class="grid-stats">
+      <div class="stat-box stat-destaque">
+        <span class="stat-rotulo">Total de Horas</span>
+        <strong id="statTotalHoras" class="stat-valor">0</strong>
+        <small class="stat-sub">neste mês</small>
+      </div>
+      <div class="stat-box">
+        <span class="stat-rotulo">Plantões 24h</span>
+        <strong id="statCount24h" class="stat-valor">0</strong>
+        <small class="stat-sub">turnos</small>
+      </div>
+      <div class="stat-box">
+        <span class="stat-rotulo">Plantões 12h</span>
+        <strong id="statCount12h" class="stat-valor">0</strong>
+        <small class="stat-sub">turnos</small>
+      </div>
+      <div class="stat-box">
+        <span class="stat-rotulo">Sobreaviso (SN)</span>
+        <strong id="statCountSN" class="stat-valor">0</strong>
+        <small class="stat-sub">escalas</small>
+      </div>
+      <div class="stat-box">
+        <span class="stat-rotulo">Plantões Longos</span>
+        <strong id="statCountLong" class="stat-valor">0</strong>
+        <small class="stat-sub">48h / 72h</small>
+      </div>
+    </div>
+    <div id="alertaSobrecarga" class="alerta-sobrecarga" style="display:none">
+      ⚠️ <strong>Aviso de Saúde Médica:</strong> Você possui mais de 60 horas de plantão agendadas este mês. Planeje períodos adequados de repouso para sua segurança e dos pacientes.
+    </div>
   </section>
 
+  <!-- Lista de Plantões Agendados -->
+  <section class="card">
+    <div class="linha-titulo">
+      <h2>🗓️ Meus Plantões Agendados</h2>
+      <div class="controles-lista">
+        <select id="filtroLocal" class="filtro-select">
+          <option value="todos">Todos os Locais</option>
+          <option value="mhcuidar">Clínica mhcuidar</option>
+          <option value="hospitais">Hospitais Externos</option>
+        </select>
+        <button id="btnAtualizar" type="button" class="mini" title="Atualizar lista">↻ Atualizar</button>
+      </div>
+    </div>
+    <div id="lista" class="lista-plantoes"></div>
+  </section>
+
+  <!-- Painel do Agente WhatsApp Próprio (Pareamento) -->
+  <section id="cardAgenteWa" class="card card-whatsapp-agente">
+    <div class="linha-titulo">
+      <h2>🤖 Agente WhatsApp Próprio (mhcuidar)</h2>
+      <span id="badgeEstadoWa" class="tag-estado-wa">Verificando…</span>
+    </div>
+    <p class="dica">
+      Conecte seu WhatsApp para receber os lembretes <strong>24h e 2h antes</strong> de cada plantão sem intermediários pagos.
+      Você também pode agendar mandando mensagem para você mesma!
+    </p>
+
+    <div class="wa-pareamento-opcoes">
+      <!-- Opção 1: Código de Pareamento sem Câmera -->
+      <div class="wa-col">
+        <h3>Opção 1: Código de Pareamento (Recomendado)</h3>
+        <p class="nota">Não precisa de câmera: digite seu número e o WhatsApp gera um código de 8 dígitos para você autorizar no celular.</p>
+        <div class="linha-parear-num">
+          <input id="inputPairNum" type="text" placeholder="5575991815612" value="5575991815612">
+          <button id="btnPedirCodigoPair" type="button" class="primario">Gerar Código</button>
+        </div>
+        <div id="boxPairCode" class="box-codigo-pair" style="display:none">
+          <span>Digite este código no seu WhatsApp:</span>
+          <strong id="displayPairCode" class="codigo-grande">---- ----</strong>
+          <small>Vá em WhatsApp → Aparelhos conectados → Conectar com número de telefone</small>
+        </div>
+      </div>
+
+      <!-- Opção 2: QR Code tradicional -->
+      <div class="wa-col">
+        <h3>Opção 2: QR Code</h3>
+        <p class="nota">Escaneie com a câmera do celular em <em>Aparelhos Conectados</em>.</p>
+        <div class="qr-container">
+          <img id="imgQrWa" src="/api/wa/qr" alt="QR Code WhatsApp" style="display:none">
+          <div id="qrPlaceholder" class="qr-placeholder">Carregando status do WhatsApp…</div>
+        </div>
+        <button id="btnReconectarWa" type="button" class="mini" style="margin-top:8px">Gerar Novo QR</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Configurações do Sistema -->
   <section class="card config">
-    <h2>⚙️ Configurações</h2>
+    <h2>⚙️ Configurações & Contatos Oficiais</h2>
     <div class="grade">
-      <label>Seu WhatsApp (só dígitos, com DDI+DDD)<input id="cfgWhats" inputmode="numeric" placeholder="5511999998888"></label>
-      <label>Provedor do WhatsApp
+      <label>
+        WhatsApp Oficial da Dra. (DDI+DDD+Número)
+        <input id="cfgWhats" inputmode="numeric" placeholder="5575991815612" value="5575991815612">
+      </label>
+      <label>
+        Provedor do WhatsApp
         <select id="cfgProv">
-          <option value="agente">Agente próprio (recomendado)</option>
+          <option value="agente" selected>Agente próprio (Baileys — no seu WhatsApp)</option>
           <option value="callmebot">CallMeBot (grátis)</option>
           <option value="twilio">Twilio</option>
-          <option value="console">Só registrar (teste)</option>
+          <option value="console">Apenas Registrar no Log</option>
         </select>
       </label>
-      <label>Chave CallMeBot<input id="cfgKey" placeholder="apikey do CallMeBot"></label>
-      <label>Avisar antes (minutos, separados por vírgula)<input id="cfgJanelas" placeholder="1440,120"></label>
-      <label>Resumo diário (HH:MM, vazio = desligado)<input id="cfgResumo" placeholder="07:00"></label>
+      <label>
+        Avisos de Antecedência (minutos antes)
+        <input id="cfgJanelas" placeholder="1440,120" value="1440,120">
+        <small style="color:#6b7d73">1440 = 24h antes, 120 = 2h antes</small>
+      </label>
+      <label>
+        Resumo Diário Matinal (HH:MM)
+        <input id="cfgResumo" placeholder="07:00" value="07:00">
+        <small style="color:#6b7d73">Receba todo dia às 07:00 os plantões do dia</small>
+      </label>
     </div>
+
     <div class="acoes">
-      <button id="btnSalvarCfg" type="button" class="primario">Salvar</button>
-      <button id="btnTestarWpp" type="button">Testar WhatsApp</button>
-      <button id="btnGoogle" type="button">🔗 Conectar Google Agenda</button>
+      <button id="btnSalvarCfg" type="button" class="primario">Salvar Configurações</button>
+      <button id="btnTestarWpp" type="button">📲 Testar Disparo WhatsApp</button>
+      <button id="btnGoogle" type="button">🔗 Conectar Google Agenda OAuth2</button>
     </div>
-    <p class="nota">A agenda conectada é a da conta <strong>mh.cuidarsaude@gmail.com</strong>. Os plantões criados aqui aparecem nela automaticamente, e os lembretes chegam no seu WhatsApp.</p>
+    <p class="nota">
+      Conta da agenda vinculada: <strong>mh.cuidarsaude@gmail.com</strong>. Número de WhatsApp oficial: <strong>+55 (75) 99181-5612</strong>.
+    </p>
   </section>
+
 </main>
 
-<footer>mhcuidar • feito com cuidado 💚</footer>
+<footer>
+  <p><strong>mhcuidar • Plantões AI</strong> — Gestão Médica com Inteligência e Cuidado 💚</p>
+  <p class="footer-sub">Agenda: mh.cuidarsaude@gmail.com • WhatsApp: +55 (75) 99181-5612</p>
+</footer>
+
 <script src="app.js"></script>
 </body>
 </html>

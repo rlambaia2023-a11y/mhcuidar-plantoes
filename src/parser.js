@@ -218,7 +218,7 @@ function extrairLocal(original) {
 }
 
 function capLocal(s) {
-  const conhecidos = (config.get('KNOWN_PLACES', 'Clínica mhcuidar') || '').split(/[;|]/).map((x) => x.trim()).filter(Boolean);
+  const conhecidos = (config.get('KNOWN_PLACES', 'Clínica mhcuidar') || '').split(/[;,|]/).map((x) => x.trim()).filter(Boolean);
   const sn = norm(s);
   for (const c of conhecidos) {
     const nc = norm(c);
