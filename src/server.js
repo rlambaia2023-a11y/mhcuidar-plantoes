@@ -142,6 +142,15 @@ app.post('/api/wa/reconnect', (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+app.post('/api/wa/pair-code', async (req, res) => {
+  try {
+    const agente = require('./agente');
+    const code = await agente.requestPairingCode(req.body.numero);
+    res.json({ ok: true, code });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`mhcuidar • Plantões rodando em http://localhost:${PORT}`);

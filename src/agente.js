@@ -129,7 +129,16 @@ function iniciar(handleMessage) {
   conectar();
 }
 
-// Força reconexão (gera um QR novo). Retorna true se iniciou.
+// Solicita código de pareamento (8 caracteres) para o número — alternativa ao QR.
+// No celular: WhatsApp → Aparelhos conectados → "Conectar com número de telefone".
+async function requestPairingCode(numero) {
+  const dig = String(numero || '').replace(/\D/g, '');
+  if (dig.length < 10) throw new Error('Número inválido. Use DDI+DDD+número, só dígitos.');
+  if (!sock) throw new Error('Agente não iniciado.');
+  const code = await sock.requestPairingCode(dig);
+  console.log(`[agente] código de pareamento gerado para ${dig}`);
+  return code;
+}
 function reconnect() {
   try { sock?.ws?.close(); } catch {}
   try { sock?.end?.(); } catch {}
@@ -144,4 +153,4 @@ function status() {
   return { estado, qrDisponivel: fs.existsSync(QR_PATH), qrPath: QR_PATH };
 }
 
-module.exports = { iniciar, enviar, status, reconnect, textoDe, ehDono, numeroDe, jidDe, QR_PATH };
+module.exports = { iniciar, enviar, status, reconnect, requestPairingCode, textoDe, ehDono, numeroDe, jidDe, QR_PATH };
