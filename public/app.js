@@ -142,13 +142,19 @@ $('btnAtualizar').onclick = carregar;
 async function carregarCfg() {
   const c = await api('GET', '/api/config');
   $('cfgWhats').value = c.WHATSAPP_NUMBER || '';
-  $('cfgProv').value = c.WHATSAPP_PROVIDER || 'callmebot';
+  $('cfgProv').value = c.WHATSAPP_PROVIDER || 'agente';
   $('cfgKey').value = c.CALLMEBOT_APIKEY || '';
   $('cfgJanelas').value = c.REMINDER_WINDOWS_MIN || '1440,120';
   $('cfgResumo').value = c.DAILY_SUMMARY_TIME || '';
   const g = await api('GET', '/api/google/status');
   $('statusGoogle').textContent = g.connected ? 'agenda: ✓ ' + (g.email || 'conectada') : 'agenda: desconectada';
   $('btnGoogle').textContent = g.connected ? '✓ Agenda conectada' : '🔗 Conectar Google Agenda';
+  try {
+    const wa = await api('GET', '/api/wa/status');
+    if (wa && wa.estado) {
+      $('statusGoogle').textContent += wa.estado === 'conectado' ? ' • zap: ✓' : ' • zap: pareando…';
+    }
+  } catch {}
 }
 $('btnSalvarCfg').onclick = async () => {
   const r = await api('PUT', '/api/config', {

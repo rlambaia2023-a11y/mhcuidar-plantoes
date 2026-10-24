@@ -1,6 +1,12 @@
 // Envio de lembretes por WhatsApp.
-// Provedores: callmebot (grátis, ideal p/ uso pessoal), twilio, console (só loga).
+// Provedores: agente (próprio, via Baileys — recomendado), callmebot (grátis),
+// twilio, console (só loga).
 const config = require('./config');
+
+async function viaAgente(numero, texto) {
+  const agente = require('./agente');
+  return agente.enviar(numero, texto);
+}
 
 async function viaCallMeBot(numero, texto) {
   const apikey = config.get('CALLMEBOT_APIKEY');
@@ -29,7 +35,8 @@ async function viaTwilio(numero, texto) {
 async function sendWhatsApp(texto, numeroOverride = null) {
   const numero = (numeroOverride || config.get('WHATSAPP_NUMBER') || '').replace(/\D/g, '');
   if (!numero) throw new Error('WHATSAPP_NUMBER não configurado. Ajuste nas Configurações.');
-  const provider = config.get('WHATSAPP_PROVIDER', 'callmebot');
+  const provider = config.get('WHATSAPP_PROVIDER', 'agente');
+  if (provider === 'agente') return { provider, result: await viaAgente(numero, texto) };
   if (provider === 'twilio') return { provider, result: await viaTwilio(numero, texto) };
   if (provider === 'console') {
     console.log('[whatsapp:console]', texto);

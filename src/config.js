@@ -8,6 +8,7 @@ const CONFIG_FILE = path.join(__dirname, '..', 'data', 'config.json');
 const EDITABLE_KEYS = [
   'WHATSAPP_PROVIDER',
   'WHATSAPP_NUMBER',
+  'OWNER_WHATSAPP',
   'CALLMEBOT_APIKEY',
   'REMINDER_WINDOWS_MIN',
   'DAILY_SUMMARY_TIME',

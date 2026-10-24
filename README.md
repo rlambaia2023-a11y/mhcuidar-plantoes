@@ -37,9 +37,27 @@ Feito uma única vez (~10 min):
 5. Copie o **ID do cliente** e o **Segredo do cliente** para o `.env` (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`).
 6. Reinicie o sistema e clique em **🔗 Conectar Google Agenda** nas Configurações. Autorize com a conta `mh.cuidarsaude@gmail.com` e pronto — os plantões passam a aparecer na sua agenda automaticamente.
 
-## 📲 Lembretes no WhatsApp
+## 🤖 Agente WhatsApp próprio (recomendado)
 
-### Opção A — CallMeBot (grátis, recomendado)
+Em vez de serviços pagos, o sistema inclui **nosso próprio agente de WhatsApp**: ele conecta o seu número como um "aparelho vinculado" (igual ao WhatsApp Web) e faz tudo sozinho — **sem custo por mensagem**:
+
+- **Você agenda pelo próprio WhatsApp**: mande uma mensagem para você mesma como *"Plantão 24h amanhã às 7h no Hospital São Luiz"* → ele entende, mostra o resumo e agenda quando você responde **SIM**. Comandos: `agenda` (próximos plantões), `sim`, `não`, `ajuda`.
+- **Lembretes automáticos** 24h e 2h antes + resumo diário, direto no seu WhatsApp.
+- **Roda no nosso servidor** (VM dedicada, ligada 24/7), com um vigia automático que reinicia o sistema sozinho se ele cair.
+
+### Pareamento (uma única vez)
+
+1. O sistema gera um **QR code** (arquivo `data/wa-qr.png` ou endpoint `/api/wa/qr`).
+2. No celular: WhatsApp → **Aparelhos conectados** → **Conectar aparelho** → escaneie o QR.
+3. Pronto — a sessão fica salva e reconecta sozinha. Se o QR expirar antes de escanear, gere outro em `/api/wa/qr` (ou `POST /api/wa/reconnect`).
+
+### ⚠️ Aviso honesto
+
+O agente usa automação não-oficial do WhatsApp (protocolo Web). Na prática funciona bem, mas existe **risco de bloqueio temporário** do número pelo WhatsApp — por isso os lembretes também podem usar CallMeBot ou Twilio como alternativa (troque `WHATSAPP_PROVIDER` nas Configurações). Recomendações: mantenha o app do celular atualizado e não use o número para disparos em massa.
+
+## 📲 Lembretes no WhatsApp (alternativas)
+
+### Opção A — CallMeBot (grátis)
 
 1. Salve o número **+34 644 71 27 40** nos contatos e mande no WhatsApp: `I allow callmebot to send me messages`
 2. Você recebe uma **apikey**. Coloque-a nas Configurações do sistema (campo *Chave CallMeBot*) junto com seu número (`5511999998888`).

@@ -118,7 +118,36 @@ app.post('/api/test-whatsapp', async (req, res) => {
   }
 });
 
+// --- agente WhatsApp próprio ---
+app.get('/api/wa/status', (req, res) => {
+  try {
+    const agente = require('./agente');
+    res.json(agente.status());
+  } catch (e) {
+    res.json({ estado: 'desconectado', erro: e.message });
+  }
+});
+app.get('/api/wa/qr', (req, res) => {
+  const agente = require('./agente');
+  const st = agente.status();
+  if (st.qrDisponivel) res.sendFile(st.qrPath);
+  else res.status(404).json({ error: 'QR não disponível no momento.' });
+});
+app.post('/api/wa/reconnect', (req, res) => {
+  try {
+    const agente = require('./agente');
+    if (agente.reconnect()) res.json({ ok: true, msg: 'Reconectando — novo QR em instantes.' });
+    else res.status(500).json({ error: 'Não foi possível reiniciar a conexão.' });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`mhcuidar • Plantões rodando em http://localhost:${PORT}`);
   scheduler.iniciar();
+  if (config.get('WHATSAPP_PROVIDER', 'agente') === 'agente') {
+    console.log('[bot] iniciando agente WhatsApp próprio...');
+    require('./bot').iniciar();
+  }
 });
