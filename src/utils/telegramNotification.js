@@ -4,7 +4,7 @@
  * diretamente para o Telegram da Dra. na clínica mhcuidar.
  */
 
-import { generateGoogleCalendarUrl } from './calendarIntegration';
+import { generateGoogleCalendarUrl } from './calendarIntegration.js';
 
 /**
  * Cria a mensagem formatada para o Telegram em Markdown
